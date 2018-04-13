@@ -24,7 +24,6 @@ npm manifest:
       "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
       "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js  --recursive",
       "test:watch": "npm run test -- --watch",
-      "checkType": "yarn run flow"
     },
     "author": "",
     "license": "ISC",
@@ -4399,16 +4398,10 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: Command failed.
-  Exit code: 2
-  Command: sh
-  Arguments: -c /home/blackwell/WebstormProjects/spotify/node_modules/.bin/flow
-  Directory: /home/blackwell/WebstormProjects/spotify
-  Output:
-  
-      at ProcessTermError.MessageError (/usr/share/yarn/lib/cli.js:186:110)
-      at new ProcessTermError (/usr/share/yarn/lib/cli.js:226:113)
-      at ChildProcess.<anonymous> (/usr/share/yarn/lib/cli.js:30281:17)
-      at ChildProcess.emit (events.js:180:13)
-      at maybeClose (internal/child_process.js:936:16)
-      at Process.ChildProcess._handle.onexit (internal/child_process.js:220:5)
+  SyntaxError: /home/blackwell/WebstormProjects/spotify/package.json: Unexpected token } in JSON at position 436
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1036:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:98:30)
+      at /usr/share/yarn/lib/cli.js:109:13
+      at <anonymous>
