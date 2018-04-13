@@ -1,6 +1,15 @@
+// @flow
 import React, { Component  } from 'react';
 
-class Card extends Component {
+type Props = {|
+    id: string,
+    name: string,
+    imageURL: string,
+    onClickHandler: Object,
+    text: string,
+|}
+
+class Card extends Component<Props> {
 
      styles = {
         imageStyles: {

@@ -1,18 +1,52 @@
+// @flow
 import React, { Component } from 'react';
 import axios from 'axios';
 import Card from '../components/Card';
 import { spotifyAlbumURL } from '../constants';
+type Props = {|
+    history: Object,
+    location: {
+    hash: string,
+        key: string,
+        pathname: string,
+        search: string,
+        state: {
+        auth:{
+            authToken: string
+        },
+        current_user: {
+            user: {
+                images: Object,
+                display_name : string
+            }
+        },
+        data: {
+            albums: Array<Object>
+        }
+    }
+},
+match : {
+    isExact: Boolean,
+        params: Object,
+        path: string,
+        url: string
+}
+|}
 
-export default class ArtistAlbums extends Component {
-    constructor(props) {
+type State = {|
+    current_user: Object,
+    tracks: Array<Object>
+|}
+export default class ArtistAlbums extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
-            current_user: [],
+            current_user: Object,
             tracks: []
         };
     }
 
-    componentDidMount = () => {
+    componentDidMount = (): void => {
         const { current_user } = this.props.location.state;
         if(current_user){
             this.setState({ current_user })
@@ -21,7 +55,7 @@ export default class ArtistAlbums extends Component {
         }
     }
 
-    showAlbums = (albums) => {
+    showAlbums = (albums : Array<Object>): Array<Object> | null=> {
         if(albums != undefined){
             let results = [];
             albums.map((album, index) => {
@@ -32,7 +66,7 @@ export default class ArtistAlbums extends Component {
                             <Card
                                 name={album.name}
                                 id={album.id}
-                                key={album.id}
+                                key={index}
                                 imageURL={hasImage.url}
                                 onClickHandler={event => this.getAlbumTracks(event, album.id, album.name)}
                                 text="Show Album"
@@ -43,11 +77,11 @@ export default class ArtistAlbums extends Component {
             })
             return results
         }else{
-            return <p></p>
+            return null
         }
     }
 
-    getAlbumTracks = (event, albumId, name) => {
+    getAlbumTracks = (event: Object, albumId: string, name: string): void => {
         event.preventDefault();
         const { authToken } = this.props.location.state.auth;
         let tracks;
@@ -72,17 +106,29 @@ export default class ArtistAlbums extends Component {
             } 
         } = this.props.location.state;
 
-        return (
-            <div>
-                <div className="justify-content-center mt-5 row">
-                    <p className="text-center display-5">
-                        Album Results for { albums[0].artists[0].name}
-                    </p>
+        if(albums[0]!=undefined) {
+            return (
+                <div>
+                    <div className="justify-content-center mt-5 row">
+                        <p className="text-center display-5">
+                            Album Results for {albums[0].artists[0].name}
+                        </p>
+                    </div>
+                    <div className="row">
+                        {this.showAlbums(albums)}
+                    </div>
                 </div>
-                <div className="row">
-                    {this.showAlbums(albums)}
+            )
+        }else{
+            return (
+                <div>
+                    <div className="justify-content-center mt-5 row">
+                        <p className="text-center display-5">
+                           Nothing to show
+                        </p>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 }

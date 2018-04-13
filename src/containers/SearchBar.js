@@ -1,16 +1,28 @@
+// @flow
 import React,{Component} from 'react'
 import {connect} from "react-redux"
 import { bindActionCreators } from 'redux'
 import {searchSpotifyArtists} from "../actions/index"
 
-class SearchBar extends Component{
+type Props = {|
+    authToken: string
+|}
 
-   constructor(props){
+type State = {|
+    query: string,
+    placeHolder: string,
+    intervalBeforerequest: number,
+    lockRequest: boolean,
+    error: string
+|}
+
+class SearchBar extends Component<Props, State>{
+
+   constructor(props : Props){
        super(props);
 
        this.state = {
            query:"",
-           //country:this.props.defaultCountry,
            placeHolder:"Enter artist name",
            intervalBeforerequest:3000,
            lockRequest:false,
@@ -18,12 +30,11 @@ class SearchBar extends Component{
         }
    }
 
-    captureSearch = (searchTerm) => {
+    captureSearch = (searchTerm: string): void => {
         this.setState({ query: searchTerm })
     }
 
     render(){
-       console.log(this.props);
         return (
             <div className="row mt-5 justify-content-center">
                 <div className="col-lg-6">

@@ -1,12 +1,4 @@
-/*import React, { Component } from 'react';
-
-export default class App extends Component {
-  render() {
-    return (
-      <div>React Redux ca marche</div>
-    );
-  }
-}*/
+// @flow
 import React, { Component } from "react";
 import axios from "axios";
 import {
@@ -17,8 +9,26 @@ import {
     spotifyProfileURL
 } from "../constants/";
 
-export default class Login extends Component {
-    constructor(props) {
+
+type Props = {|
+    history: Object,
+    location: {
+        hash: string,
+        pathname: string,
+        search: string
+    },
+    match : Object
+|}
+
+type State = {|
+    value: string,
+    authToken: string,
+    authorized: boolean,
+    profile: [],
+|}
+
+export default class Login extends Component<Props, State> {
+    constructor(props : Props) {
         super(props);
         this.state = {
             value: "React Spotify",
@@ -28,7 +38,7 @@ export default class Login extends Component {
         };
     }
 
-    componentDidMount = () => {
+    componentDidMount = ():void => {
         let url = window.location.href;
         if (url.indexOf("token=") > -1) {
             let authToken = url
@@ -40,7 +50,7 @@ export default class Login extends Component {
         }
     };
 
-    handleAuthFlow = event => {
+    handleAuthFlow = (event: Object):void => {
         event.preventDefault();
 
         if (this.state.authorized) {

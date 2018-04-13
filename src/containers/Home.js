@@ -1,26 +1,60 @@
+// @flow
 import React, { Component  } from 'react';
 import axios from 'axios';
 import { spotifySearchURL, spotifyArtistURL } from '../constants/';
 import Card from '../components/Card';
 
+type Props = {|
+    history: Object,
+    location: {
+    hash: string,
+        key: string,
+        pathname: string,
+        search: string,
+        state: {
+        auth:{
+            authToken: string
+        },
+        current_user: {
+            user: {
+                display_name : string
+            }
+        }
+    }
+},
+match : {
+    isExact: Boolean,
+        params: Object,
+        path: string,
+        url: string
+}
+|}
 
-class Home extends Component {
-    constructor(props) {
+type State = {|
+    current_user: Object,
+    query: string,
+    artists: Object,
+    albums: Array<mixed>,
+    error: string
+|}
+
+class Home extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
-            current_user: [],
+            current_user: Object,
             query: '',
-            artists: [],
+            artists: Object,
             albums: [],
             error: ''
         }
     }
 
-    captureSearch = (searchTerm) => {
+    captureSearch = (searchTerm: string): void => {
         this.setState({ query: searchTerm })
-    }
+    };
 
-    componentDidMount = () => {
+    componentDidMount = ():void => {
         const { current_user } = this.props.location.state;
         if(current_user){
             this.setState({ current_user })
@@ -29,7 +63,7 @@ class Home extends Component {
         }
     }
 
-    searchSpotifyArtists = (event) => {
+    searchSpotifyArtists = (event: Object):void => {
         event.preventDefault();
         const { authToken } = this.props.location.state.auth;
         let artists;
@@ -46,7 +80,7 @@ class Home extends Component {
 
     }
 
-    showArtistResults = (artists) => {
+    showArtistResults = (artists: Array<Object>):Array<Object> | null => {
         if(artists != undefined){
             let results = [];
             artists.map((artist, index) => {
@@ -66,13 +100,13 @@ class Home extends Component {
                     )
                 }
             });
-            return results
+            return results;
         }else{
-            return <p></p>
+            return null
         }
     }
 
-    searchAlbums = (event, artistId, name) => {
+    searchAlbums = (event: Object, artistId: string, name: string):void => {
         event.preventDefault();
         const { authToken } = this.props.location.state.auth;
         let albums;
